@@ -79,6 +79,7 @@ public function archive($id)
         ->route('admin.message.show', $message->id)
         ->with('success', 'Message archived successfully.');
 }
+
 public function dashboard()
 {
     $totalMessages = ContactMessage::count();
@@ -91,15 +92,20 @@ public function dashboard()
 
     $archivedMessages = ContactMessage::where('status', 'archived')->count();
 
+    // Get the latest 5 messages for the dashboard
+    $recentMessages = ContactMessage::latest()
+        ->take(5)
+        ->get();
+
     return view('admin.dashboard', compact(
         'totalMessages',
         'newMessages',
         'repliedMessages',
         'resolvedMessages',
-        'archivedMessages'
+        'archivedMessages',
+        'recentMessages'
     ));
 }
-
     public function reply(Request $request, $id)
     {
         $message = ContactMessage::findOrFail($id);

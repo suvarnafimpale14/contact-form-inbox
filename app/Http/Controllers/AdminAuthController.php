@@ -20,10 +20,15 @@ class AdminAuthController extends Controller
             'password' => ['required'],
         ]);
 
-        $admin = Admin::where('email', $credentials['email'])->first();
+        $admin = Admin::where(
+            'email',
+            $credentials['email']
+        )->first();
 
-        if ($admin && Hash::check($credentials['password'], $admin->password)) {
-
+        if ($admin && Hash::check(
+            $credentials['password'],
+            $admin->password
+        )) {
             session([
                 'admin_id' => $admin->id,
                 'admin_name' => $admin->name,
